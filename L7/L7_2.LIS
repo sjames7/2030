@@ -1,0 +1,39 @@
+
+Source file: L7_2.X68
+Assembled on: 16-11-02 at: 18:52:43
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1  00009000                        ORG       $9000
+    2  00009000 00000000     RESULT:   DC.L      0
+    3                                
+    4  00009500                        ORG       $9500
+    5  00009500              START:              
+    6  00009500 027CDFFF               ANDI.W    #%1101111111111111,SR ;;prog initially starts in SSP this turns off cuz 1 and 0 in S bit = 0
+    7                        *            MOVE.L      #$12345678,D0
+    8                        *            MOVE.L      #$9ABCDEF0,D1
+    9                        *            MOVE.L      #$0FEDCBA9,D2
+   10  00009504 4FF900008100           LEA       $8100,A7              ;;(SP)A7 = @8100
+   11  0000950A 4EB900009512           JSR       GENMUL                ;;pushes address "GENMUL" onto the stack.. prog execution now starts there
+   12                        *            MOVE.L      RESULT,D4
+   13  00009510 4E4E                   TRAP      #14                   ;;JSR operation: SP = SP - 4....8100-4 = 80FC.. PC-> (SP).. DST Addr -> PC
+   14                        
+   15  00009512              GENMUL:             
+   16  00009512 2F00                   MOVE.L    D0,-(A7)
+   17                        *            ;a7 = 80FC -4 = 80F8.. push long word 12345.. to memory location (A7) - @ 80F8-80FB
+   18                        *            move.l      (a7)+,d4
+   19                        *            move.l      a7,d5
+   20                        *            move.l      (a7)+,d6
+   21                                    
+   22  00009514 2001                   MOVE.L    D1,D0                 ;;overwrite d0 with 9abcd..
+   23  00009516 C1C2                   MULS      D2,D0                 ;;= 06C27C70
+   24  00009518 23C000009000           MOVE.L    D0,RESULT
+   25  0000951E 201F                   MOVE.L    (A7)+,D0
+   26  00009520 4E75                   RTS       
+   27                                    
+   28                                            
+   29                        
+   30                        
+   31           00009500               END       START
+
+Lines: 31, Errors: 0, Warnings: 0.

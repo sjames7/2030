@@ -1,0 +1,39 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 10/12/2016 7:09:31 PM
+
+00000000                             1  *L4_6.x68     
+00000000                             2  
+00008000                             3      ORG $8000
+00008000  207C 00009000              4  START   MOVEA.L #MATRIX,A0    
+00008006  343C 0004                  5      MOVE.W  #4,D2         
+0000800A  C4FC 0001                  6      MULU    #1,D2         
+0000800E  1030 2802                  7      MOVE.B  2(A0,D2.L),D0
+00008012                             8  
+00008012  C4FC 0003                  9      MULU    #3,D2   ;finishes 3 rows and now at '13' -> $900C 
+00008016  1830 2803                 10      MOVE.B  3(A0,D2.L),D4   ;the 3 increments ffrom 900C to 3 bytes more to where '16 = $10' is 900F
+0000801A                            11      
+0000801A                            12      
+0000801A  D004                      13      add.B   D4,D0  
+0000801C                            14      
+0000801C                            15      
+0000801C  4E4E                      16      TRAP    #14
+0000801E                            17  
+0000801E                            18  **** 4 x 4 matrix ****
+0000801E                            19  
+00009000                            20      ORG $9000       
+00009000= 01 02 03 04               21  MATRIX  DC.B    1,2,3,4
+00009004= 05 06 07 08               22      DC.B    5,6,7,8
+00009008= 09 0A 0B 0C               23      DC.B    9,10,11,12
+0000900C= 0D 0E 0F 10               24      DC.B    13,14,15,16
+00009010                            25      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+MATRIX              9000
+START               8000

@@ -1,0 +1,28 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 10/12/2016 5:48:06 PM
+
+00000000                             1  *L4_5.x68      
+00000000                             2      
+00008000                             3      ORG $8000
+00008000  207C 00009000              4  START   MOVEA.L #LIST,A0
+00008006  2018                       5      MOVE.L  (A0)+,D0
+00008008  3018                       6      MOVE.W  (A0)+,D0
+0000800A  1018                       7      MOVE.B  (A0)+,D0
+0000800C  4E4E                       8      TRAP    #14
+0000800E                             9  
+00009000                            10      ORG $9000
+00009000= 12345678                  11  LIST    DC.L    $12345678
+00009004= 9ABC                      12      DC.W    $9ABC
+00009006= DE                        13      DC.B    $DE
+00009007                            14      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+LIST                9000
+START               8000

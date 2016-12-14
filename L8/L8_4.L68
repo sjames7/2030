@@ -1,0 +1,70 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 11/9/2016 8:24:49 PM
+
+00008000                             1          ORG     $8000
+00008000                             2          
+00008000                             3  START   
+00008000  4FF9 0000A00A              4          LEA         $A00A,sp
+00008006  3439 00009000              5          move.w      xval,d2
+0000800C  3639 00009002              6          move.w      yval,d3
+00008012                             7  
+00008012  3F02                       8          move.w      d2,-(sp)        
+00008014  3F03                       9          move.w      d3,-(sp)   ;pass by val to sub
+00008016  4879 00009004             10          pea         zval       ;pass by ref long pushed = 4 bytes
+0000801C                            11          
+0000801C  4EB9 00008028             12          jsr         QUAD
+00008022  4FEF 0008                 13          lea         8(sp),sp
+00008026                            14          
+00008026  4E4E                      15  EXIT:        TRAP    #14
+00008028                            16  QUAD:
+00008028                            17  *inside the sub move all registers to be used into stack and load then back before rts
+00008028  4E50 FFF8                 18          LINK        a0,#-8      ;stack fram is 2 words = 1 long
+0000802C  48A7 3E00                 19          movem.w     D2-D6,-(sp)
+00008030  4242                      20          clr         d2
+00008032  4243                      21          clr         d3
+00008034  4244                      22          clr         d4
+00008036  206F 000E                 23          move.l      14(sp),a0   ;z reference
+0000803A  3810                      24          move.w      (a0),d4     ;z is gonna be in d4 then posted back
+0000803C  362F 0012                 25          move.w      18(sp),d3   ;y
+00008040  342F 0014                 26          move.w      20(sp),d2   ;x 
+00008044                            27          
+00008044                            28  
+00008044  3802                      29          move.w      d2,d4       ;d4=x
+00008046  C9C4                      30          muls        d4,d4       ;u = x*x
+00008048  3144 FFFC                 31          move.w      d4,-4(A0)
+0000804C                            32          
+0000804C  3A03                      33          move.w      d3,d5
+0000804E  CBC5                      34          muls        d5,d5
+00008050  3145 FFFC                 35          move.w      d5,-4(a0)
+00008054                            36          
+00008054  3C02                      37          move.w      d2,d6   ;w=
+00008056  CDF8 0002                 38          muls        2,d6
+0000805A  CDC3                      39          muls        d3,d6
+0000805C                            40          
+0000805C                            41          
+0000805C                            42        
+0000805C                            43  
+00009000                            44          ORG     $9000
+00009000= 0001                      45  xVal       dc.w    1
+00009002= 0002                      46  yVal       dc.w    2
+00009004                            47  zVal       ds.w    1
+00009006                            48  
+00009006                            49  
+00009006                            50  
+00009006                            51  
+00009006                            52          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+EXIT                8026
+QUAD                8028
+START               8000
+XVAL                9000
+YVAL                9002
+ZVAL                9004

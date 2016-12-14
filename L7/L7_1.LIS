@@ -1,0 +1,36 @@
+
+Source file: L7_1.X68
+Assembled on: 16-11-02 at: 17:42:28
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1  00009000                        ORG       $9000
+    2                                
+    3  00009000              START:              
+    4                        *        move.w      val1,d0
+    5                        *        move.w      val2,d1
+    6                                
+    7  00009000 3A01         ODD:      MOVE.W    D1,D5                 ;;this is the one to rotate into carry flag
+    8  00009002 E24D                   LSR.W     #1,D5                 ;;shift into carry flag
+    9  00009004 6400000C               BCC       LOOP
+   10                        *;if carry was set means its an odd num so add to sum - else if carry cleared then skip past checking if its at 1
+   11                        
+   12  00009008 D840                   ADD.W     D0,D4                 ;;odd num so it comes here and adds the val to sum register
+   13                        
+   14                        
+   15  0000900A 0C410001     COND:     CMPI      #1,D1                 ;;if d1 (quotient) is at 1 then finish
+   16  0000900E 67000008               BEQ       EXIT                  ;;if not at 1 then continue with loop
+   17                                
+   18                        
+   19  00009012 E348         LOOP:     LSL.W     #1,D0                 ;;double val1
+   20  00009014 E249                   LSR.W     #1,D1                 ;;half val2 - then check if odd if odd then add sum
+   21  00009016 60E8                   BRA       ODD
+   22                                
+   23                        
+   24  00009018 4E4E         EXIT:     TRAP      #14
+   25                        
+   26                        
+   27                        
+   28           00009000               END       START
+
+Lines: 28, Errors: 0, Warnings: 0.

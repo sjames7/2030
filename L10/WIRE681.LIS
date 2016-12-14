@@ -1,0 +1,60 @@
+
+Source file: WIRE681.X68
+Assembled on: 16-11-23 at: 20:11:37
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1                        ******************************************************
+    2                        * WIRE681.x68   sHIJU JAMES - Nov 23                                     *
+    3                        *                                                    *
+    4                        * This is a "wire" program.  It reads the 68681      *
+    5                        * input port and updates the output port, simulating *
+    6                        * wire connections, as follows:                      *
+    7                        *                                                    *
+    8                        *        IP0 ----> OP0                               *
+    9                        *        IP1 ----> OP1                               *
+   10                        *        IP2 ----> OP2                               *
+   11                        *        IP3 ----> OP3                               *
+   12                        *        IP4 ----> OP4                               *
+   13                        *        IP5 ----> OP5                               *
+   14                        ******************************************************
+   15           0000C001     DUART:    EQU       $00C001               ;;base address of 68681
+   16           0000001A     IPR:      EQU       13*2                  ;;input port register
+   17           0000001C     OPR_SET:  EQU       14*2                  ;;set bit command reg.
+   18           0000001E     OPR_CLR:  EQU       15*2                  ;;clear bit cmd. reg.
+   19           00000002     SRA:      EQU       2
+   20           00000006     RBA:      EQU       6
+   21                        
+   22  00008000                        ORG       $8000
+   23  00008000 207C0000C001 WIRE681:  MOVEA.L   #DUART,A0             ;;A0 points to 68681
+   24  00008006 1E280002     LOOP:     MOVE.B    SRA(A0),D7            ;;read input port
+   25  0000800A 02070001               ANDI.B    #1,D7
+   26  0000800E 67F6                   BEQ       LOOP
+   27  00008010 10280006               MOVE.B    RBA(A0),D0
+   28  00008014 0C000071               CMPI.B    #'q',D0
+   29  00008018 67000018               BEQ       EXIT
+   30  0000801C 020000FF               ANDI.B    #$FF,D0               ;;(mask if desired)
+   31  00008020 6102                   BSR.S     OUT681                ;;update output port
+   32  00008022 60E2                   BRA       LOOP                  ;;repeat
+   33                        
+   34                        ******************************************************
+   35                        * OUT681 - OUTput data to 68681 output port          *
+   36                        *                                                    *
+   37                        *        ENTER:   D0[0:7] contains data to output    *
+   38                        *                 A0 points to 68681 DUART           *
+   39                        *        EXIT:    all registers intact               *
+   40                        *        USES:    no subroutines                     *
+   41                        ******************************************************
+   42  00008024 1140001C     OUT681:   MOVE.B    D0,OPR_SET(A0)        ;;clr. bits, set pins
+   43  00008028 4600                   NOT.B     D0                    ;;opposite input to clr 
+   44  0000802A 1140001E               MOVE.B    D0,OPR_CLR(A0)        ;;set bits, clr. pins
+   45  0000802E 4600                   NOT.B     D0                    ;;restore D0
+   46  00008030 4E75                   RTS       
+   47  00008032              EXIT:               
+   48  00008032 4E4E                   TRAP      #14
+   49  00008034 217C00000000           MOVE.L    #$00,OPR_SET(A0)
+                001C        
+   50  0000803C 4E75                   RTS       
+   51           00008000               END       WIRE681
+
+Lines: 51, Errors: 0, Warnings: 0.

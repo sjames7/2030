@@ -1,0 +1,39 @@
+
+Source file: L9_1.X68
+Assembled on: 16-11-16 at: 20:10:25
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1                        
+    2                        
+    3  0000802A                        ORG       $802A                 ;;TRAP 6 VECTOR
+    4  0000802A 4EF900009000           JMP       T6
+    5                                
+    6  00008030                        ORG       $8030                 ;;TRAP 7 VECTOR
+    7  00008030 4EF900009200           JMP       T7
+    8                              
+    9  00009000                        ORG       $9000                 ;;t6 handler
+   10  00009000              T6:                 
+   11  00009000 0A571000               EORI.W    #%001000000000000,(A7) ;;prog initially starts in SSP this turns off cuz 1 and 0 in S bit = 0
+   12  00009004 4E73                   RTE       
+   13                                
+   14  00009200                        ORG       $9200                 ;;t7 handler
+   15  00009200              T7:                 
+   16  00009200 0257DFFF               ANDI.W    #%1101111111111111,(A7) ;;prog initially starts in SSP this turns off cuz 1 and 0 in S bit = 0
+   17  00009204 4E73                   RTE       
+   18                        
+   19                        
+   20  00009500                        ORG       $9500
+   21  00009500              MAIN:               
+   22  00009500 103C0001               MOVE.B    #1,D0
+   23  00009504 4E46                   TRAP      #6                    ;;calling trap 7
+   24  00009506 123C0002               MOVE.B    #2,D1
+   25  0000950A 4E47                   TRAP      #7
+   26  0000950C 123C0002               MOVE.B    #2,D1
+   27                                
+   28  00009510 4E4E                   TRAP      #14
+   29                           
+   30                        
+   31           00009500               END       MAIN
+
+Lines: 31, Errors: 0, Warnings: 0.

@@ -1,0 +1,45 @@
+
+Source file: L5_4.X68
+Assembled on: 16-10-19 at: 20:21:27
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1                        *L5_4: Sample program 3
+    2                         
+    3  00008000                        ORG       $8000
+    4                        
+    5  00008000              START:              
+    6  00008000 103900009000           MOVE.B    NUM1,D0
+    7  00008006 123900009001           MOVE.B    NUM2,D1
+    8  0000800C 143900009002           MOVE.B    NUM3,D2
+    9                        
+   10  00008012 B041                   CMP       D1,D0
+   11  00008014 6D000018               BLT       MAINELSE
+   12                                
+   13  00008018 B042                   CMP       D2,D0
+   14  0000801A 6D00000A               BLT       INNERELSE
+   15  0000801E 163900009000           MOVE.B    NUM1,D3
+   16  00008024 4E4E                   TRAP      #14
+   17                                 
+   18  00008026 163900009002 INNERELSE: MOVE.B    NUM3,D3
+   19  0000802C 4E4E                   TRAP      #14
+   20                                 
+   21  0000802E B242         MAINELSE: CMP       D2,D1
+   22  00008030 6D00000A               BLT       MAINE2
+   23  00008034 163900009001           MOVE.B    NUM2,D3
+   24  0000803A 4E4E                   TRAP      #14
+   25                         
+   26  0000803C 163900009002 MAINE2:   MOVE.B    NUM3,D3
+   27  00008042 4E4E                   TRAP      #14
+   28                         
+   29  00009000                        ORG       $9000
+   30                        
+   31                        
+   32  00009000 02           NUM1:     DC.B      2
+   33  00009001 05           NUM2:     DC.B      5
+   34  00009002 0A           NUM3:     DC.B      10
+   35  00009003 00           BIGGEST:  DC.B      0
+   36                            
+   37           00008000               END       START
+
+Lines: 37, Errors: 0, Warnings: 0.

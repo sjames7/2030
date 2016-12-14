@@ -1,0 +1,59 @@
+
+Source file: L8_2.X68
+Assembled on: 16-11-09 at: 18:44:41
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1  00008000                        ORG       $8000
+    2                                
+    3  00008000              START:              
+    4  00008000 4FF90000A00A           LEA       $A00A,SP
+    5  00008006 343900009000           MOVE.W    XVAL,D2
+    6  0000800C 363900009002           MOVE.W    YVAL,D3
+    7  00008012 383900009004           MOVE.W    ZVAL,D4
+    8                                
+    9  00008018 3F02                   MOVE.W    D2,-(SP)
+   10  0000801A 3F03                   MOVE.W    D3,-(SP)
+   11  0000801C 3F04                   MOVE.W    D4,-(SP)
+   12                                
+   13  0000801E 4EB90000802A           JSR       QUAD
+   14  00008024 4FEF0008               LEA       8(SP),SP
+   15                                
+   16  00008028 4E4E         EXIT:     TRAP      #14
+   17  0000802A              QUAD:               
+   18                        *inside the sub move all registers to be used into stack and load then back before rts
+   19  0000802A 48A73E00               MOVEM.W   D2-D6,-(SP)
+   20  0000802E 4242                   CLR       D2
+   21  00008030 4243                   CLR       D3
+   22  00008032 4244                   CLR       D4
+   23  00008034 382F000E               MOVE.W    14(SP),D4             ;;z
+   24  00008038 362F0010               MOVE.W    16(SP),D3             ;;y
+   25  0000803C 342F0012               MOVE.W    18(SP),D2             ;;x 
+   26                                
+   27                        
+   28  00008040 3202                   MOVE.W    D2,D1                 ;;result w is stored into d1 as final but x is needed in the 2xy calc @ d2
+   29  00008042 C3C1                   MULS      D1,D1
+   30  00008044 C3FC0005               MULS      #5,D1
+   31                                
+   32  00008048 C5FC0002               MULS.W    #2,D2
+   33  0000804C C5C3                   MULS.W    D3,D2
+   34  0000804E 9242                   SUB.W     D2,D1                 ;;send party 2xy done and subtracted into d1
+   35                                
+   36  00008050 C9C4                   MULS.W    D4,D4
+   37  00008052 D244                   ADD.W     D4,D1
+   38  00008054 4C9F007C               MOVEM.W   (SP)+,D2-D6
+   39  00008058 4E75                   RTS       
+   40                        
+   41                        
+   42                        
+   43  00009000                        ORG       $9000
+   44  00009000 0001         XVAL:     DC.W      1
+   45  00009002 0002         YVAL:     DC.W      2
+   46  00009004 0003         ZVAL:     DC.W      3
+   47                        
+   48                        
+   49                        
+   50                        
+   51           00008000               END       START
+
+Lines: 51, Errors: 0, Warnings: 0.

@@ -1,0 +1,60 @@
+00009500 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 11/16/2016 8:32:34 PM
+
+00000000                             1  *       Shiju james - 0926393 - CIS*2030 - NOV 14/16
+00000000                             2          
+00008024                             3          ORG     $8024
+00008024  4EF9 00009700              4          JMP     T5
+0000802A                             5          
+0000802A                             6          
+0000802A                             7          
+00009500                             8          ORG     $9500
+00009500                             9  MAIN:
+00009500                            10          
+00009500  4E56 FFFE                 11          LINK        A6,#-2          ;one word local val
+00009504  3D7C 04D2 FFFE            12          move.w      #$4D2,-2(A6)
+0000950A  3F2E FFFE                 13          MOVE.w      -2(A6),-(SP)    ;pushing val onto stack - pass copy of val to funct
+0000950E  4E45                      14          TRAP        #5         ;calling the recursive funct
+00009510                            15          
+00009510  4E5E                      16          UNLK        A6
+00009512  4E4E                      17  EXIT:   TRAP        #14   
+00009514                            18          
+00009700                            19          ORG     $9700
+00009700                            20  t5:        
+00009700  4E56 FFFC                 21          LINK        A6,#-4      ;
+00009704  4240                      22          CLR         d0
+00009706  302E 000C                 23          MOVE.w      12(a6),d0    ;=12 =C
+0000970A  6700 002E                 24          BEQ         RETURN      ;if passed n = 0 then finish and return
+0000970E  80FC 000A                 25          divu        #10,d0       ;d0 = 0002 0001 remainder in first half 0002 & quotient in second half of register 0001
+00009712  3D40 FFFC                 26          move.w      d0,-4(a6)    ;QUOTIENT for next call stored on stack frame
+00009716  303C 0000                 27          move.w      #$0000,d0    ;d0 = 0002 0000 
+0000971A  80FC 0100                 28          divu        #$100,d0     ;d0 = 0000 0200
+0000971E  80FC 0100                 29          divu        #$100,d0     ;d0 = 0000 0002
+00009722  3D40 FFFE                 30          move.w      d0,-2(a6)    ;remainder on -2(a6) stack frame so this val can be displayed onto screen afte
+00009726                            31         
+00009726  4EB9 00009700             32          JSR         t5
+0000972C                            33  disp                          
+0000972C  4241                      34          CLR         D1          ;this is the steps given to display the letter on screen on the easy68k
+0000972E  4240                      35          CLR         D0
+00009730  102E FFFF                 36          move.b      -1(A6),d0
+00009734  0600 0030                 37          add.b       #$30,d0
+00009738  4E41                      38          trap        #1
+0000973A                            39          
+0000973A                            40  RETURN:
+0000973A  4E5E                      41          UNLK        A6
+0000973C  4E75                      42          rts
+0000973E                            43          END     MAIN
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DISP                972C
+EXIT                9512
+MAIN                9500
+RETURN              973A
+T5                  9700

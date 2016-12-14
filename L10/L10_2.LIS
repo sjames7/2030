@@ -1,0 +1,52 @@
+
+Source file: L10_2.X68
+Assembled on: 16-11-23 at: 19:54:59
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1                        
+    2                        
+    3           0000C001     DUART:    EQU       $C001
+    4           00000002     SRA:      EQU       2
+    5                        RBA:      EQU                                      ;RBA EQU 6                                                                                                                                                                                                                                                      
+***** Invalid expression - operand 1.
+    6           0000000D     CR:       EQU       $0D                   ;;return
+    7           0000000A     LF:       EQU       $0A                   ;;line feed
+    8                         
+    9  00008000                        ORG       $8000
+   10  00008000 227C0000800C MAIN:     MOVEA.L   #TEXT,A1              ;;A1  PTS at text
+   11  00008006 610000F8               BSR       INSTR                 ;;msg on A1 and call outstr to use a1 
+   12  0000800A 4E4E                   TRAP      #14
+   13                               
+   14  0000800C 00000001     TEXT:     DS.B      1
+   15                        
+   16                        *____________________________________________________
+   17  00008100                        ORG       $8100
+   18  00008100 2F08         INSTR:    MOVE.L    A0,-(A7)
+   19  00008102 3F07                   MOVE.W    D7,-(A7)              ;;working reg
+   20                        
+   21  00008104 207C0000C001           MOVEA.L   #DUART,A0             ;;a0 ->base duart
+   22  0000810A 1E280002     OUTCHR2:  MOVE.B    SRA(A0),D7            ;;status?
+   23  0000810E 02070001               ANDI.B    #1,D7                 ;;EMPTY?
+   24  00008112 67F6                   BEQ       OUTCHR2               ;;if it is empty then keep checking
+   25  00008114 14280000               MOVE.B    RBA(A0),D2            ;;NOT empty so store into d2
+   26                        
+   27  00008118 0C02000D               CMPI.B    #$0D,D2               ;;check if carriage rtn stored
+   28                                
+   29  0000811C 6600000A               BNE       STORE                 ;;if return not hit then skip this and just store 
+   30  00008120 143C0000               MOVE.B    #$0,D2                ;;if it is a return hit then modify input to null 0
+   31  00008124 6000000A               BRA       RESTORE               ;;exit function
+   32                                
+   33                                
+   34  00008128 12C2         STORE:    MOVE.B    D2,(A1)+              ;;increment after storing
+   35  0000812A 0C420000               CMPI      #0,D2                 ;;shouldnt be 0 inside d2, so repeat
+   36  0000812E 66DA                   BNE       OUTCHR2               ;;back to function
+   37                                                                                            
+   38  00008130 12C2         RESTORE:  MOVE.B    D2,(A1)+              ;;increment after storing null
+   39  00008132 3E1F                   MOVE.W    (A7)+,D7
+   40  00008134 205F                   MOVE.L    (A7)+,A0
+   41  00008136 4E75                   RTS       
+   42                        
+   43           00008000               END       MAIN
+
+Lines: 43, Errors: 1, Warnings: 0.

@@ -1,0 +1,39 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 10/12/2016 7:14:56 PM
+
+00000000                             1  *L4_6.x68     
+00000000                             2  
+00008000                             3      ORG $8000
+00008000  207C 00009000              4  START   MOVEA.L #MATRIX,A0    
+00008006  343C 0008                  5      MOVE.W  #8,D2   ; bytes per row   
+0000800A  C4FC 0001                  6      MULU    #1,D2         
+0000800E  3030 2804                  7      MOVE.w  4(A0,D2.L),D0 ;2 before now need to multiply by size of a word which is 4 bytes
+00008012                             8  
+00008012  C4FC 0003                  9      MULU    #3,D2   ;finishes 3 rows and now at '13' -> $900C 
+00008016  3830 2806                 10      MOVE.w  6(A0,D2.L),D4   ;the 3 increments ffrom 900C to 3 bytes more to where '16 = $10' is 900F
+0000801A                            11      
+0000801A                            12      
+0000801A  D044                      13      add.w   D4,D0  
+0000801C                            14      
+0000801C                            15      
+0000801C  4E4E                      16      TRAP    #14
+0000801E                            17  
+0000801E                            18  **** 4 x 4 matrix ****
+0000801E                            19  
+00009000                            20      ORG $9000       
+00009000= 0001 0002 0003 0004       21  MATRIX  DC.W    1,2,3,4
+00009008= 0005 0006 0007 0008       22      DC.W    5,6,7,8
+00009010= 0009 000A 000B 000C       23      DC.W    9,10,11,12
+00009018= 000D 000E 000F 0010       24      DC.W    13,14,15,16
+00009020                            25      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+MATRIX              9000
+START               8000

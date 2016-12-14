@@ -1,0 +1,28 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 10/12/2016 5:29:42 PM
+
+00000000                             1  *Lab4_2.x68
+00000000                             2  
+00000000  =000007AC                  3  REGION1 EQU $000007AC
+00000000  =FFFFC000                  4  REGION2 EQU $FFFFC000   
+00000000                             5  
+00008000                             6      ORG $8000
+00008000                             7  START   
+00008000  2038 07AC                  8      MOVE.L  $7AC,D0
+00008004  203C 000007AC              9      MOVE.L  #$7AC,D0
+0000800A  3038 07AC                 10      MOVE.W  REGION1,D0
+0000800E  2038 C000                 11      MOVE.L  REGION2,D0
+00008012  23F9 00009000 00009008    12      MOVE.L  $9000,$9008
+0000801C                            13      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+REGION1             7AC
+REGION2             FFFFC000
+START               8000

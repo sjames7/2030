@@ -1,0 +1,69 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 11/9/2016 8:11:16 PM
+
+00008000                             1          ORG     $8000
+00008000                             2          
+00008000                             3  START   
+00008000  4FF9 0000A00A              4          LEA         $A00A,sp
+00008006  3439 00009000              5          move.w      xval,d2
+0000800C  3639 00009002              6          move.w      yval,d3
+00008012  3839 00009004              7          move.w      zval,d4
+00008018                             8          
+00008018  3F02                       9          move.w      d2,-(sp)        
+0000801A  3F03                      10          move.w      d3,-(sp)        
+0000801C  3F04                      11          move.w      d4,-(sp)
+0000801E                            12          
+0000801E  4EB9 0000802A             13          jsr         QUAD
+00008024  4FEF 0006                 14          lea         6(sp),sp
+00008028                            15          
+00008028  4E4E                      16  EXIT:        TRAP    #14
+0000802A                            17  QUAD:
+0000802A                            18  *inside the sub move all registers to be used into stack and load then back before rts
+0000802A  48A7 3E00                 19          movem.w       D2-D6,-(sp)
+0000802E  4242                      20          clr         d2
+00008030  4243                      21          clr         d3
+00008032  4244                      22          clr         d4
+00008034  382F 000E                 23          move.w      14(sp),d4   ;z
+00008038  362F 0010                 24          move.w      16(sp),d3   ;y
+0000803C  342F 0012                 25          move.w      18(sp),d2   ;x 
+00008040                            26          
+00008040                            27  
+00008040  3202                      28          move.w      d2,d1       ;result w is stored into d1 as final but x is needed in the 2xy calc @ d2
+00008042  C3C1                      29          muls        d1,d1
+00008044  C3FC 0005                 30          muls        #5,d1
+00008048                            31          
+00008048  C5FC 0002                 32          muls.w        #2,d2
+0000804C  C5C3                      33          muls.w        d3,d2
+0000804E  9242                      34          sub.w       d2,d1       ;send party 2xy done and subtracted into d1
+00008050                            35          
+00008050  C9C4                      36          muls.w      d4,d4
+00008052  D244                      37          add.w       d4,d1
+00008054  4C9F 007C                 38          movem.w     (sp)+,d2-d6
+00008058  4E75                      39          rts
+0000805A                            40  
+0000805A                            41  
+0000805A                            42  
+00009000                            43          ORG     $9000
+00009000= 0001                      44  xVal       dc.w    1
+00009002= 0002                      45  yVal       dc.w    2
+00009004= 0003                      46  zVal       dc.w    3
+00009006                            47  
+00009006                            48  
+00009006                            49  
+00009006                            50  
+00009006                            51          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+EXIT                8028
+QUAD                802A
+START               8000
+XVAL                9000
+YVAL                9002
+ZVAL                9004

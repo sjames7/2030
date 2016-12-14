@@ -1,0 +1,47 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 11/2/2016 5:41:33 PM
+
+00008000                             1          ORG     $8000
+00008000                             2          
+00008000                             3  START   
+00008000                             4  *        move.w      val1,d0
+00008000                             5  *        move.w      val2,d1
+00008000                             6          
+00008000  3A01                       7  ODD:    move.w      d1,d5       ;this is the one to rotate into carry flag
+00008002  E24D                       8          lsr.w       #1,d5       ;shift into carry flag
+00008004  6400 000C                  9          bcc         loop
+00008008                            10  *;if carry was set means its an odd num so add to sum - else if carry cleared then skip past checking if its at 1
+00008008                            11  
+00008008  D840                      12          add.w       d0,d4       ;odd num so it comes here and adds the val to sum register
+0000800A                            13  
+0000800A                            14  
+0000800A  0C41 0001                 15  cond:   CMPI        #1,d1       ;if d1 (quotient) is at 1 then finish
+0000800E  6700 0008                 16          BEQ         EXIT        ;if not at 1 then continue with loop
+00008012                            17          
+00008012                            18  
+00008012  E348                      19  loop:   lsl.w       #1,d0       ;double val1
+00008014  E249                      20          lsr.w       #1,d1       ;half val2 - then check if odd if odd then add sum
+00008016  60E8                      21          BRA         odd
+00008018                            22          
+00008018                            23  
+00008018  4E4E                      24  EXIT:        TRAP    #14
+0000801A                            25  
+0000801A                            26  *        ORG     $9000
+0000801A                            27  *VAL1:   DC.W        %00000110   ;=6
+0000801A                            28  *val2:   DC.W        %00000110   ;=2
+0000801A                            29  
+0000801A                            30          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+COND                800A
+EXIT                8018
+LOOP                8012
+ODD                 8000
+START               8000

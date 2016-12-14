@@ -1,0 +1,58 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 10/19/2016 8:26:44 PM
+
+00000000                             1  *L5_4: Sample program 3
+00000000                             2      
+00008000                             3      ORG $8000
+00008000                             4  
+00008000                             5  START   
+00008000  1039 00009000              6           move.b  num1,d0
+00008006  1239 00009001              7           move.b  num2,d1
+0000800C  1439 00009002              8           move.b  num3,d2
+00008012                             9  
+00008012  B041                      10           cmp     d1,d0
+00008014  6D00 001C                 11           blt     mainElse
+00008018                            12          
+00008018  B042                      13           cmp     d2,d0
+0000801A  6D00 0026                 14           blt     mainE2
+0000801E  1639 00009000             15           move.b  num1,d3
+00008024  6000 0022                 16            BRA     EXIT
+00008028                            17           
+00008028  1639 00009002             18  innerElse move.b  num3,d3
+0000802E  6000 0018                 19            BRA     EXIT
+00008032                            20           
+00008032  B242                      21  mainElse  cmp     d2,d1
+00008034  6D00 000C                 22           blt     mainE2
+00008038  1639 00009001             23           move.b  num2,d3
+0000803E  6000 0008                 24            BRA     EXIT
+00008042                            25   
+00008042  1639 00009002             26  mainE2    move.b  num3,d3
+00008048  4E4E                      27  EXIT         TRAP    #14
+0000804A                            28      
+00009000                            29      ORG $9000
+00009000                            30  
+00009000                            31  
+00009000= 02                        32  num1    dc.b    2
+00009001= 05                        33  num2    dc.b    5
+00009002= 0A                        34  num3    dc.b    10
+00009003= 00                        35  biggest dc.b    0
+00009004                            36      
+00009004                            37      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BIGGEST             9003
+EXIT                8048
+INNERELSE           8028
+MAINE2              8042
+MAINELSE            8032
+NUM1                9000
+NUM2                9001
+NUM3                9002
+START               8000

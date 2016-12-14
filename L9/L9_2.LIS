@@ -1,0 +1,51 @@
+
+Source file: L9_2.X68
+Assembled on: 16-11-16 at: 20:33:04
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1                        *       Shiju james - 0926393 - CIS*2030 - NOV 14/16
+    2                                
+    3  00008024                        ORG       $8024
+    4  00008024 4EF900009700           JMP       T5
+    5                                
+    6                                
+    7                                
+    8  00009500                        ORG       $9500
+    9  00009500              MAIN:               
+   10                                
+   11  00009500 4E56FFFE               LINK      A6,#-2                ;;one word local val
+   12  00009504 3D7C04D2FFFE           MOVE.W    #$4D2,-2(A6)
+   13  0000950A 3F2EFFFE               MOVE.W    -2(A6),-(SP)          ;;pushing val onto stack - pass copy of val to funct
+   14  0000950E 4E45                   TRAP      #5                    ;;calling the recursive funct
+   15                                
+   16  00009510 4E5E                   UNLK      A6
+   17  00009512 4E4E         EXIT:     TRAP      #14
+   18                                
+   19  00009700                        ORG       $9700
+   20  00009700              T5:                 
+   21  00009700 4E56FFFC               LINK      A6,#-4                ;;
+   22  00009704 4240                   CLR       D0
+   23  00009706 302E000A               MOVE.W    10(A6),D0             ;;=12 =C
+   24  0000970A 6700002E               BEQ       RETURN                ;;if passed n = 0 then finish and return
+   25  0000970E 80FC000A               DIVU      #10,D0                ;;d0 = 0002 0001 remainder in first half 0002 & quotient in second half of register 0001
+   26  00009712 3D40FFFC               MOVE.W    D0,-4(A6)             ;;QUOTIENT for next call stored on stack frame
+   27  00009716 303C0000               MOVE.W    #$0000,D0             ;;d0 = 0002 0000 
+   28  0000971A 80FC0100               DIVU      #$100,D0              ;;d0 = 0000 0200
+   29  0000971E 80FC0100               DIVU      #$100,D0              ;;d0 = 0000 0002
+   30  00009722 3D40FFFE               MOVE.W    D0,-2(A6)             ;;remainder on -2(a6) stack frame so this val can be displayed onto screen afte
+   31                               
+   32  00009726 4EB900009700           JSR       T5
+   33  0000972C              DISP:               
+   34  0000972C 4241                   CLR       D1                    ;;this is the steps given to display the letter on screen on the easy68k
+   35  0000972E 4240                   CLR       D0
+   36  00009730 102EFFFF               MOVE.B    -1(A6),D0
+   37  00009734 06000030               ADD.B     #$30,D0
+   38  00009738 4E41                   TRAP      #1
+   39                                
+   40  0000973A              RETURN:             
+   41  0000973A 4E5E                   UNLK      A6
+   42  0000973C 4E75                   RTS       
+   43           00009500               END       MAIN
+
+Lines: 43, Errors: 0, Warnings: 0.

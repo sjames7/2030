@@ -1,0 +1,39 @@
+
+Source file: L3_4.X68
+Assembled on: 16-10-05 at: 19:26:51
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1                        *Evaluate: Sample program 4
+    2                         
+    3  00008000                        ORG       $8000
+    4                        
+    5  00008000 323900009000 START:    MOVE.W    W,D1                  ;;W =1    
+    6  00008006 343900009002           MOVE.W    X,D2                  ;;X=3 
+    7  0000800C 163900009004           MOVE.B    Y,D3                  ;;Y=3
+    8  00008012 4883                   EXT.W     D3                    ;;sign extensio
+    9                             
+   10  00008014 C2C3                   MULU.W    D3,D1                 ;;SRC X DST => dst (3*1 =  3 goes into d1)
+   11  00008016 84FC0003               DIVU.W    #3,D2                 ;;dst / src => dst (d2 (3)/#3 = 1 GOES into D2)
+   12                             
+   13  0000801A 48C1                   EXT.L     D1                    ;;longed
+   14  0000801C 48C2                   EXT.L     D2
+   15                             
+   16  0000801E D282                   ADD.L     D2,D1                 ;;D2 added into d1 (3 + 3 = 6 into d1)
+   17  00008020 23C200009006           MOVE.L    D2,Z
+   18  00008026 203900009006           MOVE.L    Z,D0                  ;;;moving it out of Z into D0
+   19                          
+   20                             
+   21                             
+   22                          
+   23  0000802C 4E4E                   TRAP      #14
+   24                        
+   25  00009000                        ORG       $9000
+   26  00009000 0001         W:        DC.W      1                     ;;16 bit vals each (2 byets)
+   27  00009002 0003         X:        DC.W      3
+   28  00009004 03           Y:        DC.B      3
+   29  00009006 00000004     Z:        DS.L      1                     ;;long is 32 bit (4 words)
+   30                          
+   31           00008000               END       START
+
+Lines: 31, Errors: 0, Warnings: 0.

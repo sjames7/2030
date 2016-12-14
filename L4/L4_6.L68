@@ -1,0 +1,31 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 10/12/2016 6:02:22 PM
+
+00000000                             1  *L4_6.x68     
+00000000                             2  
+00008000                             3      ORG $8000
+00008000  207C 00009000              4  START   MOVEA.L #MATRIX,A0    
+00008006  343C 0004                  5      MOVE.W  #4,D2         
+0000800A  C4FC 0001                  6      MULU    #1,D2         
+0000800E  1030 2802                  7      MOVE.B  2(A0,D2.L),D0 
+00008012  4E4E                       8      TRAP    #14
+00008014                             9  
+00008014                            10  **** 4 x 4 matrix ****
+00008014                            11  
+00009000                            12      ORG $9000       
+00009000= 01 02 03 04               13  MATRIX  DC.B    1,2,3,4
+00009004= 05 06 07 08               14      DC.B    5,6,7,8
+00009008= 09 0A 0B 0C               15      DC.B    9,10,11,12
+0000900C= 0D 0E 0F 10               16      DC.B    13,14,15,16
+00009010                            17      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+MATRIX              9000
+START               8000

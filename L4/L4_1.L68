@@ -1,0 +1,26 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 10/12/2016 5:27:03 PM
+
+00000000                             1  *Lab4_1.x68
+00000000                             2  
+00000000                             3      
+00000000  =00000064                  4  VALUE    EQU    100
+00000000                             5  
+00008000                             6       ORG     $8000
+00008000  103C 0064                  7  START    MOVE.B  #100,D0
+00008004  103C 0064                  8       MOVE.B  #VALUE,D0
+00008008  303C 2710                  9       MOVE.W  #(VALUE*VALUE),D0
+0000800C  203C 000F4240             10       MOVE.L  #(VALUE*VALUE*VALUE),D0            
+00008012  4E4E                      11       TRAP    #14    
+00008014                            12       END    START       
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+START               8000
+VALUE               64

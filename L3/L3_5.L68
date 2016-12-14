@@ -1,0 +1,48 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 10/5/2016 7:36:50 PM
+
+00000000                             1  *Evaluate: Sample program 4
+00000000                             2      
+00008000                             3      ORG $8000
+00008000                             4  
+00008000  3239 00009000              5  START   MOVE.W  W,D1    ;W =1    
+00008006  3439 00009002              6          MOVE.W  W+2,D2    ;X=3  
+0000800C  1639 00009004              7          MOVE.B  W+4,D3    ;Y=3
+00008012  4883                       8          EXT.W   D3      ;sign extensio
+00008014                             9          
+00008014  C2C3                      10          MULU.W    D3,D1   ;SRC X DST => dst (3*1 =  3 goes into d1)
+00008016  84FC 0003                 11          DIVU.W    #3,D2   ;dst / src => dst (d2 (3)/#3 = 1 GOES into D2)
+0000801A                            12          
+0000801A  48C1                      13          EXT.L   D1  ;longed
+0000801C  48C2                      14          EXT.L   D2
+0000801E                            15          
+0000801E  D282                      16          ADD.L   D2,D1   ;D2 added into d1 (3 + 1 = 6 into d1)
+00008020  23C1 00009006             17          MOVE.L  D1,Z
+00008026  2039 00009006             18          MOVE.L  Z,D0    ;;moving it out of Z into D0
+0000802C                            19    
+0000802C                            20          
+0000802C                            21          
+0000802C                            22          
+0000802C  4E4E                      23          TRAP    #14     
+0000802E                            24  
+00009000                            25      ORG $9000
+00009000= 0001                      26  W   DC.W    1   ;16 bit vals each (2 byets)
+00009002= 0003                      27  X   DC.W    3
+00009004= 03                        28  Y   DC.B    3
+00009006                            29  Z   DS.L    1   ;long is 32 bit (4 words)
+0000900A                            30          
+0000900A                            31      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+START               8000
+W                   9000
+X                   9002
+Y                   9004
+Z                   9006

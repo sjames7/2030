@@ -1,0 +1,38 @@
+
+Source file: L8_1.X68
+Assembled on: 16-11-09 at: 17:59:30
+          by: X68K PC-2.2 Copyright (c) University of Teesside 1989,96
+Defaults: ORG $0/FORMAT/OPT A,BRL,CEX,CL,FRL,MC,MD,NOMEX,NOPCO
+
+    1  00008000                        ORG       $8000
+    2                                
+    3  00008000              START:              
+    4  00008000 4FF90000A00A           LEA       $A00A,SP
+    5  00008006 303900009000           MOVE.W    VAL1,D0
+    6  0000800C 3F00                   MOVE.W    D0,-(SP)
+    7  0000800E 4EB90000801A           JSR       QUAD
+    8  00008014 4FEF0002               LEA       2(SP),SP
+    9                                
+   10  00008018 4E4E         EXIT:     TRAP      #14
+   11  0000801A              QUAD:               
+   12  0000801A 322F0004               MOVE.W    4(SP),D1
+   13  0000801E 3401                   MOVE.W    D1,D2
+   14  00008020 C3C1                   MULS      D1,D1
+   15  00008022 C3FC0005               MULS      #5,D1
+   16  00008026 C5FC0002               MULS      #2,D2
+   17  0000802A 9242                   SUB.W     D2,D1
+   18  0000802C 5C41                   ADD.W     #6,D1
+   19  0000802E 4242                   CLR.W     D2
+   20  00008030 4E75                   RTS       
+   21                        
+   22                        
+   23                        
+   24  00009000                        ORG       $9000
+   25  00009000 0002         VAL1:     DC.W      2
+   26                        
+   27                        
+   28                        
+   29                        
+   30           00008000               END       START
+
+Lines: 30, Errors: 0, Warnings: 0.
